@@ -7,6 +7,7 @@ import app.service.CalcCostProduct;
 import app.util.Constants;
 import app.util.Rounder;
 import app.view.AppView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +27,13 @@ public class AppController {
         AppView view = new AppView();
         view.getDisplayInfo(Constants.START_MESSAGE);
         diary.getFruit(productList);
-        while (choice != 4) {
+        while (choice != 3) {
             view.getMenu();
 //            Menu:
 //        1 - show all product
 //        2 - calculation cost product with delivery
 //        3 - exit
+
             choice = view.getInputNum("Input operation: ");
 
             switch (choice) {
@@ -47,15 +49,16 @@ public class AppController {
                     view.getLine();
                     name = view.getInputName("Input name: ");
                     quota = view.getInputNum("Input quota: ");
+                    //Errors
 
                     for (Product product : productList) {
-                        if (product == null) {
-                            view.getDisplayInfo("Product that you input was not found");
-                        } else if (product.getName().equalsIgnoreCase(name.trim())) {
-                            if (quota > product.getQuota()) {
-                                view.getDisplayInfo("In shop we have only - " + product.getQuota() + Constants.MEASURE_PCS);
-                                break;
-                            }
+                        if (quota > product.getQuota() && product.getName().equalsIgnoreCase(name.trim())) {
+                            view.getDisplayInfo("In our shop we are not have - " +
+                                    quota + Constants.MEASURE_PCS + " of - " + name);
+                            break;
+                        }
+
+                        if (product.getName().equalsIgnoreCase(name.trim())) {
                             totalCost = costProduct.calcCostProducts(quota, product.getPrice());
                             double distance = view.getDistanceToClient();
                             double calcDelivery = delivery.calcDelivery(distance);
@@ -68,7 +71,11 @@ public class AppController {
                                     + Constants.MEASURE_DISTANCE + ") will cost - " + Constants.CURRENCY + " " + Rounder.round(calcDelivery) +
                                     " so the same price(product and delivery) is " + Constants.CURRENCY + " " + Rounder.round(finalCostDeliveryAndProduct));
                             view.getDisplayInfo("\n-------------------------------------------------------------------------------\n");
+                        } else {
+                            view.getDisplayInfo("Product that you input do not find");
+                            break;
                         }
+
 
                     }
 
