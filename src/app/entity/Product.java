@@ -1,14 +1,19 @@
 package app.entity;
 
+import app.util.Constants;
+
 public class Product {
-    private  String name;
-    private  int quota;
-    private  double price;
+    private String name;
+    private int quota;
+    private double price;
 
     public Product(String name, int quota, double price) {
         this.name = name;
         this.quota = quota;
         this.price = price;
+    }
+
+    public Product() {
     }
 
     public String getName() {
@@ -37,10 +42,9 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", quota=" + quota +
-                ", price=" + price +
-                '}';
+        return "Product: " +
+                "name: " + name +
+                ", quota: " + quota + Constants.MEASURE_PCS +
+                ", price: " + Constants.CURRENCY + " " + price + "\n";
     }
 }
